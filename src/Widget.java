@@ -38,7 +38,7 @@ public class Widget extends JFrame {
                 JOptionPane.INFORMATION_MESSAGE);
     }
 
-    public static void run(String imagePath) {
+    public static void run(Widget w) {
         // Determine what the GraphicsDevice can support.
         GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
         GraphicsDevice gd = ge.getDefaultScreenDevice();
@@ -56,7 +56,7 @@ public class Widget extends JFrame {
         SwingUtilities.invokeLater(new Runnable() {
             @Override
             public void run() {
-                Widget sw = new Widget(imagePath);
+                // Widget sw = new Widget(imagePath);
 
                 // Set the window to 70% translucency, if supported.
                 if (isTranslucencySupported) {
@@ -64,9 +64,13 @@ public class Widget extends JFrame {
                 }
 
                 // Display the window.
-                sw.setVisible(true);
+                w.setVisible(true);
             }
         });
+    }
+
+    public void stop() {
+        this.dispose();
     }
 
 }

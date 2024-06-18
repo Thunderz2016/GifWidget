@@ -18,7 +18,7 @@ public class Main extends JFrame {
 	public static void main(String[] args) {
 		Display display = new Display();
 		Shell shell = new Shell(display);
-		shell.setText("GIF Widgets 0.1 - Control Panel");
+		shell.setText("GIF Widget 0.1 - Control Panel");
 
 		GUI gui = new GUI(shell, SWT.NONE);
 		gui.pack();
