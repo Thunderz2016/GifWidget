@@ -1,0 +1,74 @@
+import java.awt.*;
+import javax.swing.*;
+import static java.awt.GraphicsDevice.WindowTranslucency.*;
+
+public class Widget extends JFrame {
+    public Widget(String imagePath) {
+        super("GIF Widget 0.1");
+
+        setBackground(new Color(0,0,0,0));
+
+        setLocationRelativeTo(null);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setUndecorated(true);
+        getLayeredPane().remove(this.getLayeredPane().getComponent(1));
+        
+
+        ImageIcon gif = new ImageIcon(this.getClass().getResource(imagePath));
+        JLabel imageLabel = new JLabel();
+        imageLabel.setIcon(gif);
+        imageLabel.setBounds(0, 0, gif.getIconHeight(), gif.getIconWidth());
+        setSize(new Dimension(gif.getIconWidth(),gif.getIconHeight()));
+
+        JPanel panel = new JPanel() {
+            @Override
+            protected void paintComponent(Graphics g) {
+                if (g instanceof Graphics2D) {
+                    final int R = 240;
+                    final int G = 240;
+                    final int B = 240;
+
+                    java.awt.Paint p = new java.awt.GradientPaint(0.0f, 0.0f, new Color(R, G, B, 0),
+                    0.0f, getHeight(), new Color(R, G, B, 0), true);
+                    Graphics2D g2d = (Graphics2D)g;
+                    g2d.setPaint(p);
+                    g2d.fillRect(0, 0, getWidth(), getHeight());
+
+                }
+            }
+        };
+        setContentPane(panel);
+        panel.add(imageLabel, java.awt.BorderLayout.CENTER);
+        // add(new JButton("I am a Button"));
+    }
+
+    public static void main(String[] args) {
+        // Determine what the GraphicsDevice can support.
+        GraphicsEnvironment ge = 
+            GraphicsEnvironment.getLocalGraphicsEnvironment();
+        GraphicsDevice gd = ge.getDefaultScreenDevice();
+        boolean isPerPixelTranslucencySupported = 
+            gd.isWindowTranslucencySupported(PERPIXEL_TRANSLUCENT);
+
+        //If translucent windows aren't supported, exit.
+        if (!isPerPixelTranslucencySupported) {
+            System.out.println(
+                "Per-pixel translucency is not supported");
+                System.exit(0);
+        }
+
+        JFrame.setDefaultLookAndFeelDecorated(true);
+
+        // Create the GUI on the event-dispatching thread
+        SwingUtilities.invokeLater(new Runnable() {
+            @Override
+            public void run() {
+                Widget gtw = new
+                    Widget("default.gif");
+
+                // Display the window.
+                gtw.setVisible(true);
+            }
+        });
+    }
+}

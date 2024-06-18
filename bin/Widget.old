@@ -1,0 +1,59 @@
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Frame;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+
+import static java.awt.GraphicsDevice.WindowTranslucency;
+
+import javax.swing.ImageIcon;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+
+public class Widget extends JFrame {
+    
+    JPanel contentPane;
+    JLabel gifLabel = new JLabel();
+
+    // public Widget(String imagePath) {
+    //     try {
+    //         ImageIcon gif = new ImageIcon(this.getClass().getResource(imagePath));
+    //         contentPane = (JPanel) getContentPane();
+    //         contentPane.setLayout(new BorderLayout());
+    //         contentPane.setBackground(new Color(1.0f,1.0f,1.0f,0.5f));
+    //         int width = gif.getIconWidth();
+    //         int height = gif.getIconHeight();
+    //         setSize(new Dimension(width, height));
+    //         setTitle("GIF Widget 1.0");
+    //         gifLabel.setIcon(gif);
+    //         contentPane.add(gifLabel, java.awt.BorderLayout.CENTER);
+
+    //         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    //         this.setLocationRelativeTo(null);
+    //         this.setVisible(true);
+    //         this.setUndecorated(true);
+    //         // this.setExtendedState(Frame.MAXIMIZED_BOTH);
+    //         this.setBackground(new Color(1.0f,1.0f,1.0f,0.5f));
+
+    //     } catch (Exception e) {
+    //         e.printStackTrace();
+    //     }
+    // }
+    JPanel panel = new JPanel() {
+        @Override
+        protected void paintComponent(Graphics g) {
+            if (g instanceof Graphics2D) {
+                final int R = 240;
+                final int G = 240;
+                final int B = 240;
+
+                Paint p = 
+                Graphics2D g2d = (Graphics2D)g;
+                g2d.setPaint(p);
+                g2d.fillRect(0, 0, getWidth(), getHeight());
+            }
+        }
+    };
+}
