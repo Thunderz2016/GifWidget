@@ -23,7 +23,7 @@ public class Widget extends JFrame {
         setUndecorated(true);
         setSize(gif.getIconWidth(), gif.getIconHeight());
         setLocationRelativeTo(null);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         setBackground(new Color(0, 0, 0, 0));
         setAlwaysOnTop(true);
 
