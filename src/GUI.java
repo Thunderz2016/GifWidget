@@ -12,6 +12,7 @@ import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.ControlAdapter;
 import org.eclipse.swt.events.KeyAdapter;
 import org.eclipse.swt.events.KeyListener;
 import org.eclipse.swt.events.SelectionAdapter;
@@ -150,6 +151,13 @@ public class GUI extends Composite {
 		btnAlwaysOnTop.setText("Always On Top");
 		btnAlwaysOnTop.setSelection(config.isAlwaysOnTop());
 		btnAlwaysOnTop.setBounds(141, 109, 122, 19);
+		btnAlwaysOnTop.addSelectionListener(new SelectionAdapter() {
+			@Override
+            public void widgetSelected(SelectionEvent e) {
+                // config.setAlwaysOnTop(btnAlwaysOnTop.getSelection());
+				w.setAlwaysOnTop(btnAlwaysOnTop.getSelection());
+            }
+		});
 		
 		Button btnClickThrough = new Button(this, SWT.CHECK);
 		btnClickThrough.setEnabled(false);
