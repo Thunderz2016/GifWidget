@@ -1,2 +1,5 @@
 # .gitignore
 /bin/
+/GifWidget.jar
+/config.dat
+/history.dat
