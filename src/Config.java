@@ -60,6 +60,10 @@ public class Config {
     public void setClickThrough(boolean clickThrough) {
         this.clickThrough = clickThrough;
     }
+
+    public String toString() {
+        return String.format("%s|%s|%s|%s|%s", imagePath, imageSize, borderless, alwaysOnTop, clickThrough);
+    }
 }
 
 

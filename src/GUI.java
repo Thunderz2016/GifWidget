@@ -6,6 +6,9 @@ import java.awt.Frame;
 import java.awt.event.KeyEvent;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileWriter;
+import java.io.FilenameFilter;
+import java.io.IOException;
 import java.util.Scanner;
 
 import javax.swing.JFileChooser;
@@ -28,6 +31,7 @@ public class GUI extends Composite {
 	private Widget w;
 	private String imagePath;
 	private Config config;
+	private Combo combo;
 
 	/**
 	 * Create the composite.
@@ -38,9 +42,10 @@ public class GUI extends Composite {
 		super(parent, style);
 		setLayout(null);
 		config = loadConfig();
+		imagePath = config.getImagePath();
 	
-		Combo combo = new Combo(this, SWT.NONE);
-		readHistory(combo);
+		combo = new Combo(this, SWT.NONE);
+		loadHistory(combo);
 
 		
 		Button btnNewButton_1 = new Button(this, SWT.NONE);
@@ -93,6 +98,7 @@ public class GUI extends Composite {
 				if(arg0.keyCode == SWT.CR || arg0.keyCode == SWT.KEYPAD_CR){
 					String fieldText = combo.getText();
 					imagePath = fieldText;
+					config.setImagePath(fieldText);
 					// if(combo.indexOf(fieldText) == -1){
 					// 	combo.add(fieldText);
 					// }
@@ -109,7 +115,12 @@ public class GUI extends Composite {
 		btnBrowse.addSelectionListener(new SelectionAdapter() {
 			@Override
             public void widgetSelected(SelectionEvent e) {
-                FileDialog dialog = new FileDialog(new Frame(), "Locate an image...", FileDialog.LOAD);
+                FileDialog dialog = new FileDialog(new Frame(), "Select an image...", FileDialog.LOAD);
+				dialog.setFilenameFilter(new FilenameFilter() {
+					public boolean accept(File dir, String name) {
+						return name.endsWith(".gif");
+					}
+				});
 				dialog.setVisible(true);
 				imagePath = dialog.getDirectory() + dialog.getFile();
 				combo.setText(imagePath);
@@ -122,6 +133,16 @@ public class GUI extends Composite {
 		btnBorderless.setSelection(config.isBorderless());
 		btnBorderless.setBounds(20, 109, 104, 19);
 		btnBorderless.setText("Borderless");
+		btnBorderless.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+                config.setBorderless(btnBorderless.getSelection());
+                if(w != null) {
+
+				}
+
+            }
+		});
 		
 		Button btnAlwaysOnTop = new Button(this, SWT.CHECK);
 		btnAlwaysOnTop.setText("Always On Top");
@@ -130,7 +151,7 @@ public class GUI extends Composite {
 		btnAlwaysOnTop.addSelectionListener(new SelectionAdapter() {
 			@Override
             public void widgetSelected(SelectionEvent e) {
-                // config.setAlwaysOnTop(btnAlwaysOnTop.getSelection());
+                config.setAlwaysOnTop(btnAlwaysOnTop.getSelection());
 				if(w != null)
 					w.setAlwaysOnTop(btnAlwaysOnTop.getSelection());
             }
@@ -142,6 +163,7 @@ public class GUI extends Composite {
 		btnClickThrough.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
+				config.setClickThrough(btnClickThrough.getSelection());
 			}
 		});
 		btnClickThrough.setText("Click Through");
@@ -169,6 +191,7 @@ public class GUI extends Composite {
 					} else {				
 						w = new Widget(imagePath, 100, btnBorderless.getSelection(), btnAlwaysOnTop.getSelection(), btnClickThrough.getSelection());
 						Widget.run(w);
+						config.setImagePath(imagePath);
 						if(combo.indexOf(combo.getText()) == -1)
 							combo.add(imagePath);
 					}
@@ -186,7 +209,7 @@ public class GUI extends Composite {
 		// Disable the check that prevents subclassing of SWT components
 	}
 
-	private void readHistory(Combo combo) {
+	private void loadHistory(Combo combo) {
 		try {
             Scanner readHistory = new Scanner(new File("history.dat"));
             while (readHistory.hasNextLine()) {
@@ -194,6 +217,19 @@ public class GUI extends Composite {
             }
         } catch (FileNotFoundException e) {
             System.out.println("\"history.dat\" not found. Creating new file.");
+        }
+	}
+
+	public void saveHistory() {
+		try {
+            FileWriter writeHistory = new FileWriter(new File("history.dat"), false);
+            for (int i = 0; i < combo.getItemCount(); i++) {
+                writeHistory.write(combo.getItem(i) + "\n");
+            }
+            writeHistory.close();
+        } catch (IOException e) {
+            Widget.dialogBox("An IOException has occurred while saving path history to \"history.dat\", please check file permissions.", "Error", 200, JOptionPane.ERROR_MESSAGE);
+            e.printStackTrace();
         }
 	}
 
@@ -215,6 +251,17 @@ public class GUI extends Composite {
 		} catch (FileNotFoundException e) {
 			return new Config();
 		}
+	}
+
+	public void saveConfig() {
+		try {
+            FileWriter writeConfig = new FileWriter(new File("config.dat"), false);
+            writeConfig.write(this.config.toString());
+            writeConfig.close();
+        } catch (IOException e) {
+			Widget.dialogBox("An IOException has occurred while saving path history to \"config.dat\", please check file permissions.", "Error", 200, JOptionPane.ERROR_MESSAGE);
+            e.printStackTrace();
+        }
 	}
 	
 }

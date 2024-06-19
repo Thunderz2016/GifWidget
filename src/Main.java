@@ -26,17 +26,22 @@ public class Main extends JFrame {
 		shell.addShellListener(new ShellAdapter() {
 			@Override
 			public void shellClosed(ShellEvent e) {
-				int quit = JOptionPane.showConfirmDialog(null, "<html><body><p style='width:150px;'>Close all widgets and quit?</p></body></html>", "GIF Widget 0.1", JOptionPane.YES_NO_OPTION);
-				switch(quit) {
+				int quit = JOptionPane.showConfirmDialog(null,
+						"<html><body><p style='width:150px;'>Close all widgets and quit?</p></body></html>",
+						"GIF Widget 0.1", JOptionPane.YES_NO_OPTION);
+
+				switch (quit) {
 					case JOptionPane.YES_OPTION:
-					    gui.dispose();
-                        System.exit(0);
-                        break;
-                    case JOptionPane.NO_OPTION:
-                        e.doit = false;
-                        break;
-                    default:
-                        break;
+						gui.saveConfig();
+						gui.saveHistory();
+						gui.dispose();
+						System.exit(0);
+						break;
+					case JOptionPane.NO_OPTION:
+						e.doit = false;
+						break;
+					default:
+						break;
 				}
 			}
 		});
