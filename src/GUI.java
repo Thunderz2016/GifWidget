@@ -98,11 +98,21 @@ public class GUI extends Composite {
 				
 		Combo combo = new Combo(this, SWT.NONE);
 		combo.setBounds(10, 38, 394, 27);
+		combo.addSelectionListener(new SelectionAdapter() {
+			@Override
+            public void widgetSelected(SelectionEvent e) {
+                imagePath = combo.getText();
+            }
+		});
 		combo.addKeyListener(new KeyListener() {
 			@Override
 			public void keyPressed(org.eclipse.swt.events.KeyEvent arg0) {
 				if(arg0.keyCode == SWT.CR || arg0.keyCode == SWT.KEYPAD_CR){
-					imagePath = combo.getText();
+					String fieldText = combo.getText();
+					imagePath = fieldText;
+					if(combo.indexOf(fieldText) == -1){
+						combo.add(fieldText);
+					}
 				}
 			}
 
