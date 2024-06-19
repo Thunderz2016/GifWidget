@@ -1,5 +1,14 @@
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Button;
+
+import java.awt.FileDialog;
+import java.awt.Frame;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.Scanner;
+
+import javax.swing.JFileChooser;
+
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
@@ -58,12 +67,24 @@ public class GUI extends Composite {
 		
 		text = new Text(this, SWT.BORDER);
 		text.setBounds(10, 40, 402, 25);
+		text.setText(imagePath);
 		
 		Button btnBrowse = new Button(this, SWT.NONE);
+		btnBrowse.addSelectionListener(new SelectionAdapter() {
+			@Override
+            public void widgetSelected(SelectionEvent e) {
+                FileDialog dialog = new FileDialog(new Frame(), "Locate an image...", FileDialog.LOAD);
+				dialog.setVisible(true);
+				imagePath = dialog.getDirectory() + dialog.getFile();
+				text.setText(imagePath);
+            }
+		});
 		btnBrowse.setBounds(10, 71, 85, 29);
 		btnBrowse.setText("Browse...");
 		
 		Button btnBorderless = new Button(this, SWT.CHECK);
+		btnBorderless.setEnabled(false);
+		btnBorderless.setSelection(true);
 		btnBorderless.setBounds(20, 109, 104, 19);
 		btnBorderless.setText("Borderless");
 		
@@ -81,6 +102,7 @@ public class GUI extends Composite {
 		btnClickThrough.setBounds(289, 109, 122, 19);
 		
 		Spinner spinner = new Spinner(this, SWT.BORDER);
+		spinner.setSelection(100);
 		spinner.setBounds(241, 73, 50, 25);
 		
 		Label lblImageSize = new Label(this, SWT.NONE);
@@ -92,5 +114,13 @@ public class GUI extends Composite {
 	@Override
 	protected void checkSubclass() {
 		// Disable the check that prevents subclassing of SWT components
+	}
+
+	private void loadConfig() {
+		try {
+			Scanner readConfig = new Scanner(new File("config.dat"));
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		}
 	}
 }
