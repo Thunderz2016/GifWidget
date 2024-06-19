@@ -3,7 +3,6 @@ import org.eclipse.swt.widgets.Button;
 
 import java.awt.FileDialog;
 import java.awt.Frame;
-import java.awt.event.KeyEvent;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
@@ -11,12 +10,9 @@ import java.io.FilenameFilter;
 import java.io.IOException;
 import java.util.Scanner;
 
-import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.ControlAdapter;
-import org.eclipse.swt.events.KeyAdapter;
 import org.eclipse.swt.events.KeyListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;

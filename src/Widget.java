@@ -1,7 +1,5 @@
 import java.awt.*;
-import java.awt.event.*;
 import javax.swing.*;
-import java.awt.geom.Ellipse2D;
 import static java.awt.GraphicsDevice.WindowTranslucency.*;
 
 public class Widget extends JFrame {

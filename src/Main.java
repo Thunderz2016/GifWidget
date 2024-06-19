@@ -1,16 +1,11 @@
 
-import javax.swing.ImageIcon;
 import javax.swing.JFrame;
-import javax.swing.JLabel;
 import javax.swing.JOptionPane;
-import javax.swing.JPanel;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ShellAdapter;
 import org.eclipse.swt.events.ShellEvent;
-import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
-import org.eclipse.swt.widgets.MessageBox;
 import org.eclipse.swt.widgets.Shell;
 
 public class Main extends JFrame {
@@ -38,6 +33,9 @@ public class Main extends JFrame {
 						System.exit(0);
 						break;
 					case JOptionPane.NO_OPTION:
+						e.doit = false;
+						break;
+					case JOptionPane.CLOSED_OPTION:
 						e.doit = false;
 						break;
 					default:
