@@ -7,7 +7,7 @@ import static java.awt.GraphicsDevice.WindowTranslucency.*;
 public class Widget extends JFrame {
     public String imagePath;
 
-    public Widget(String imagePath) {
+    public Widget(String imagePath, int imageSize, boolean borderless, boolean alwaysOnTop, boolean clickThrough) {
         super("Borderless GIF Widget Instance");
 
         ImageIcon gif = new ImageIcon(imagePath);
@@ -25,7 +25,7 @@ public class Widget extends JFrame {
         setLocationRelativeTo(null);
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         setBackground(new Color(0, 0, 0, 0));
-        setAlwaysOnTop(true);
+        setAlwaysOnTop(alwaysOnTop);
 
         // setContentPane(panel);
         add(imageLabel, gbc);

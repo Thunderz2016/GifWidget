@@ -6,7 +6,7 @@ public class Config {
     private boolean clickThrough;
     
     public Config() {
-        this.imagePath = null;
+        this.imagePath = "";
         this.imageSize = 100;
         this.borderless = true;
         this.alwaysOnTop = true;
