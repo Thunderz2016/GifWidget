@@ -20,6 +20,7 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Spinner;
 
 import org.eclipse.swt.widgets.Text;
+import org.eclipse.swt.widgets.Combo;
 
 public class GUI extends Composite {
 	private Text text;
@@ -74,17 +75,34 @@ public class GUI extends Composite {
 		btnNewButton_1.setBounds(222, 152, 190, 111);
 		
 		Label lblGifFilePath = new Label(this, SWT.NONE);
-		lblGifFilePath.setBounds(10, 10, 94, 19);
-		lblGifFilePath.setText("GIF File Path:");
+		lblGifFilePath.setBounds(10, 10, 222, 19);
+		lblGifFilePath.setText("GIF File Path: (Press Enter to apply)");
 		
-		text = new Text(this, SWT.BORDER);
-		text.setBounds(10, 40, 402, 25);
-		text.setFocus();
-		text.addKeyListener(new KeyListener() {
+		// text = new Text(this, SWT.BORDER);
+		// text.setBounds(10, 40, 402, 25);
+		// text.setFocus();
+		// text.addKeyListener(new KeyListener() {
+		// 	@Override
+		// 	public void keyPressed(org.eclipse.swt.events.KeyEvent arg0) {
+		// 		if(arg0.keyCode == SWT.CR || arg0.keyCode == SWT.KEYPAD_CR){
+		// 			imagePath = text.getText();
+		// 		}
+		// 	}
+
+		// 	@Override
+		// 	public void keyReleased(org.eclipse.swt.events.KeyEvent arg0) {
+
+		// 	}
+		// });
+
+				
+		Combo combo = new Combo(this, SWT.NONE);
+		combo.setBounds(10, 38, 394, 27);
+		combo.addKeyListener(new KeyListener() {
 			@Override
 			public void keyPressed(org.eclipse.swt.events.KeyEvent arg0) {
 				if(arg0.keyCode == SWT.CR || arg0.keyCode == SWT.KEYPAD_CR){
-					imagePath = text.getText();
+					imagePath = combo.getText();
 				}
 			}
 
@@ -95,9 +113,9 @@ public class GUI extends Composite {
 		});
 
 		if (imagePath != null) {
-			text.setText(imagePath);
+			combo.setText(imagePath);
 		} else {
-			text.setText("");
+			combo.setText("");
 		}
 		
 		Button btnBrowse = new Button(this, SWT.NONE);
@@ -107,7 +125,7 @@ public class GUI extends Composite {
                 FileDialog dialog = new FileDialog(new Frame(), "Locate an image...", FileDialog.LOAD);
 				dialog.setVisible(true);
 				imagePath = dialog.getDirectory() + dialog.getFile();
-				text.setText(imagePath);
+				combo.setText(imagePath);
             }
 		});
 		btnBrowse.setBounds(10, 71, 85, 29);
@@ -115,7 +133,6 @@ public class GUI extends Composite {
 		
 		Button btnBorderless = new Button(this, SWT.CHECK);
 		btnBorderless.setSelection(true);
-		btnBorderless.setEnabled(false);
 		btnBorderless.setBounds(20, 109, 104, 19);
 		btnBorderless.setText("Borderless");
 		
@@ -125,6 +142,7 @@ public class GUI extends Composite {
 		btnAlwaysOnTop.setBounds(141, 109, 122, 19);
 		
 		Button btnClickThrough = new Button(this, SWT.CHECK);
+		btnClickThrough.setEnabled(false);
 		btnClickThrough.setGrayed(true);
 		btnClickThrough.addSelectionListener(new SelectionAdapter() {
 			@Override
@@ -141,6 +159,7 @@ public class GUI extends Composite {
 		Label lblImageSize = new Label(this, SWT.NONE);
 		lblImageSize.setBounds(141, 76, 94, 19);
 		lblImageSize.setText("Image Size (%)");
+
 
 	}
 
