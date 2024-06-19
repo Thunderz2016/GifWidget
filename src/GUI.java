@@ -79,11 +79,18 @@ public class GUI extends Composite {
 		
 		text = new Text(this, SWT.BORDER);
 		text.setBounds(10, 40, 402, 25);
-		text.addKeyListener(new KeyAdapter() {
-			public void keyReleased (KeyEvent ke) {
-				if(ke.getKeyCode() == SWT.CR) {
+		text.setFocus();
+		text.addKeyListener(new KeyListener() {
+			@Override
+			public void keyPressed(org.eclipse.swt.events.KeyEvent arg0) {
+				if(arg0.keyCode == SWT.CR || arg0.keyCode == SWT.KEYPAD_CR){
 					imagePath = text.getText();
 				}
+			}
+
+			@Override
+			public void keyReleased(org.eclipse.swt.events.KeyEvent arg0) {
+
 			}
 		});
 
