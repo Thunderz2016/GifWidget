@@ -4,7 +4,15 @@ public class Config {
     private boolean borderless;
     private boolean alwaysOnTop;
     private boolean clickThrough;
-   
+    
+    public Config() {
+        this.imagePath = null;
+        this.imageSize = 100;
+        this.borderless = true;
+        this.alwaysOnTop = true;
+        this.clickThrough = false;
+    }
+
     public Config(String imagePath, int imageSize, boolean borderless, boolean alwaysOnTop, boolean clickThrough) {
         this.imagePath = imagePath;
         this.imageSize = imageSize;

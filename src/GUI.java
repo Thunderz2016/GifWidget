@@ -3,13 +3,17 @@ import org.eclipse.swt.widgets.Button;
 
 import java.awt.FileDialog;
 import java.awt.Frame;
+import java.awt.event.KeyEvent;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Scanner;
 
 import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
 
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.KeyAdapter;
+import org.eclipse.swt.events.KeyListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.widgets.Label;
@@ -21,6 +25,7 @@ public class GUI extends Composite {
 	private Text text;
 	private Widget w;
 	private String imagePath;
+	private Config config;
 
 	/**
 	 * Create the composite.
@@ -30,15 +35,22 @@ public class GUI extends Composite {
 	public GUI(Composite parent, int style) {
 		super(parent, style);
 		setLayout(null);
-
+		config = loadConfig();
+		imagePath = config.getImagePath();
 		
 		Button btnNewButton = new Button(this, SWT.NONE);
 		btnNewButton.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
                 try {
-					w = new Widget("default.gif");
-					Widget.run(w);
+					if(imagePath == null){
+						Widget.dialogBox("Please specify GIF File Path first.", "Error", 170, JOptionPane.ERROR_MESSAGE);
+					} else if (!new File(imagePath).exists()) 
+						Widget.dialogBox("\"" + imagePath + "\" does not exist.", "Error", 170, JOptionPane.ERROR_MESSAGE);
+					else {				
+						w = new Widget(imagePath);
+						Widget.run(w);
+					}
                 } catch (Exception e1) {
                     e1.printStackTrace();
                 }   
@@ -67,7 +79,19 @@ public class GUI extends Composite {
 		
 		text = new Text(this, SWT.BORDER);
 		text.setBounds(10, 40, 402, 25);
-		text.setText(imagePath);
+		text.addKeyListener(new KeyAdapter() {
+			public void keyReleased (KeyEvent ke) {
+				if(ke.getKeyCode() == SWT.CR) {
+					imagePath = text.getText();
+				}
+			}
+		});
+
+		if (imagePath != null) {
+			text.setText(imagePath);
+		} else {
+			text.setText("");
+		}
 		
 		Button btnBrowse = new Button(this, SWT.NONE);
 		btnBrowse.addSelectionListener(new SelectionAdapter() {
@@ -83,16 +107,18 @@ public class GUI extends Composite {
 		btnBrowse.setText("Browse...");
 		
 		Button btnBorderless = new Button(this, SWT.CHECK);
-		btnBorderless.setEnabled(false);
 		btnBorderless.setSelection(true);
+		btnBorderless.setEnabled(false);
 		btnBorderless.setBounds(20, 109, 104, 19);
 		btnBorderless.setText("Borderless");
 		
 		Button btnAlwaysOnTop = new Button(this, SWT.CHECK);
 		btnAlwaysOnTop.setText("Always On Top");
+		btnAlwaysOnTop.setSelection(config.isAlwaysOnTop());
 		btnAlwaysOnTop.setBounds(141, 109, 122, 19);
 		
 		Button btnClickThrough = new Button(this, SWT.CHECK);
+		btnClickThrough.setGrayed(true);
 		btnClickThrough.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
@@ -116,11 +142,20 @@ public class GUI extends Composite {
 		// Disable the check that prevents subclassing of SWT components
 	}
 
-	private void loadConfig() {
+	private Config loadConfig() {
 		try {
 			Scanner readConfig = new Scanner(new File("config.dat"));
+			String[] tokens = readConfig.nextLine().split("\\|");
+			String imagePath = tokens[0];
+			int imageSize = Integer.parseInt(tokens[1]);
+			boolean borderless = Boolean.parseBoolean(tokens[2]);
+			boolean alwaysOnTop = Boolean.parseBoolean(tokens[3]);
+			boolean clickThrough = Boolean.parseBoolean(tokens[4]);
+			
+			return new Config(imagePath, imageSize, borderless, alwaysOnTop, clickThrough);
+
 		} catch (FileNotFoundException e) {
-			e.printStackTrace();
+			return new Config();
 		}
 	}
 }

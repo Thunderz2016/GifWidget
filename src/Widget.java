@@ -10,7 +10,7 @@ public class Widget extends JFrame {
     public Widget(String imagePath) {
         super("Borderless GIF Widget Instance");
 
-        ImageIcon gif = new ImageIcon(this.getClass().getResource(imagePath));
+        ImageIcon gif = new ImageIcon(imagePath);
         JLabel imageLabel = new JLabel();
         imageLabel.setIcon(gif);
         imageLabel.setBounds(0, 0, gif.getIconHeight(), gif.getIconWidth());
@@ -32,10 +32,10 @@ public class Widget extends JFrame {
 
     }
 
-    public static void dialogBox(String message, String titleBar, int width) {
+    public static void dialogBox(String message, String titleBar, int width, int type) {
         JOptionPane.showMessageDialog(null,
                 "<html><body><p style='width: " + width + "px;'>" + message + "</p></body></html>", titleBar,
-                JOptionPane.INFORMATION_MESSAGE);
+                type);
     }
 
     public static void run(Widget w) {
@@ -44,12 +44,14 @@ public class Widget extends JFrame {
         GraphicsDevice gd = ge.getDefaultScreenDevice();
         final boolean isTranslucencySupported = gd.isWindowTranslucencySupported(TRANSLUCENT);
 
-        dialogBox("To move the GIF, select \"Move\" from the Alt + Space menu, then use the arrow keys and mouse.", "GIF Widget 0.1", 420);
+        dialogBox("To move the GIF, select \"Move\" from the Alt + Space menu, then use the arrow keys and mouse.",
+                "GIF Widget 0.1", 420, JOptionPane.INFORMATION_MESSAGE);
 
         // If translucent windows aren't supported,
         // create an opaque window.
         if (!isTranslucencySupported) {
-            dialogBox("Translucency is not supported, creating an opaque window", "GIF Widget 0.1", 300);
+            dialogBox("Translucency is not supported, creating an opaque window", "GIF Widget 0.1", 300,
+                    JOptionPane.INFORMATION_MESSAGE);
         }
 
         // Create the GUI on the event-dispatching thread
