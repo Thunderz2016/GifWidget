@@ -41,7 +41,6 @@ public class GUI extends Composite {
 		imagePath = config.getImagePath();
 		fileManager.loadHistory(combo);
 
-
 		Label lblGifFilePath = new Label(this, SWT.NONE);
 		lblGifFilePath.setBounds(10, 10, 222, 19);
 		lblGifFilePath.setText("GIF File Path: (Press Enter to apply)");
@@ -84,8 +83,10 @@ public class GUI extends Composite {
 					}
 				});
 				dialog.setVisible(true);
-				imagePath = dialog.getDirectory() + dialog.getFile();
-				combo.setText(imagePath);
+				if (dialog.getDirectory() != null && dialog.getFile() != null) {
+					imagePath = dialog.getDirectory() + dialog.getFile();
+					combo.setText(imagePath);
+				}
 			}
 		});
 		btnBrowse.setBounds(10, 71, 85, 29);
@@ -142,7 +143,7 @@ public class GUI extends Composite {
 
 		Button btnStartWidget = new Button(this, SWT.NONE);
 		btnStartWidget.setBounds(10, 152, 190, 111);
-		btnStartWidget.setText("Start Widget");	
+		btnStartWidget.setText("Start Widget");
 		Button btnCloseWidget = new Button(this, SWT.NONE);
 		btnCloseWidget.setText("Close Widget");
 		btnCloseWidget.setEnabled(false);
@@ -155,8 +156,8 @@ public class GUI extends Composite {
 					if (imagePath == null || imagePath.isEmpty()) {
 						Widget.dialogBox("Path is empty. Please specify a GIF File Path.", "Error", 200,
 								JOptionPane.ERROR_MESSAGE);
-					} else if (!new File(imagePath).exists()) {
-						Widget.dialogBox("\"" + imagePath + "\" does not exist.", "Error", 170,
+					} else if (!new File(imagePath).exists() || new File(imagePath).isDirectory()) {
+						Widget.dialogBox("\"" + imagePath + "\" is not a valid file.", "Error", 160,
 								JOptionPane.ERROR_MESSAGE);
 					} else {
 						if (w == null) {
