@@ -18,12 +18,9 @@ import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Spinner;
-
-import org.eclipse.swt.widgets.Text;
 import org.eclipse.swt.widgets.Combo;
 
 public class GUI extends Composite {
-	private Text text;
 	private Widget w;
 	private String imagePath;
 	private Config config;
@@ -211,6 +208,7 @@ public class GUI extends Composite {
             while (readHistory.hasNextLine()) {
                 combo.add(readHistory.nextLine());
             }
+			readHistory.close();
         } catch (FileNotFoundException e) {
             System.out.println("\"history.dat\" not found. Creating new file.");
         }
