@@ -1,5 +1,4 @@
 
-import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
 import org.eclipse.swt.SWT;
@@ -8,7 +7,7 @@ import org.eclipse.swt.events.ShellEvent;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 
-public class Main extends JFrame {
+public class Main extends org.eclipse.swt.widgets.Shell  {
 
 	public static void main(String[] args) {
 		Display display = new Display();
@@ -16,6 +15,7 @@ public class Main extends JFrame {
 		shell.setText("GIF Widget 0.1 - Control Panel");
 
 		GUI gui = new GUI(shell, SWT.NONE);
+		gui.createMenuBar(shell);
 		gui.pack();
 
 		shell.addShellListener(new ShellAdapter() {
