@@ -6,7 +6,7 @@ public class Widget extends JFrame {
     public String imagePath;
 
     public Widget(String imagePath, int imageSize, boolean borderless, boolean alwaysOnTop, boolean clickThrough) {
-        super("Borderless GIF Widget Instance");
+        super("Transparent GIF Widget Instance");
 
         ImageIcon gif = new ImageIcon(imagePath);
         JLabel imageLabel = new JLabel();

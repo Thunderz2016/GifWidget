@@ -41,41 +41,10 @@ public class GUI extends Composite {
 		imagePath = config.getImagePath();
 		fileManager.loadHistory(combo);
 
-		Button btnNewButton_1 = new Button(this, SWT.NONE);
-		btnNewButton_1.addSelectionListener(new SelectionAdapter() {
-			@Override
-			public void widgetSelected(SelectionEvent e) {
-				try {
-					if (w != null)
-						w.stop();
-				} catch (Exception e2) {
-					e2.printStackTrace();
-				}
-			}
-		});
-		btnNewButton_1.setText("Close Widgets");
-		btnNewButton_1.setBounds(222, 152, 190, 111);
 
 		Label lblGifFilePath = new Label(this, SWT.NONE);
 		lblGifFilePath.setBounds(10, 10, 222, 19);
 		lblGifFilePath.setText("GIF File Path: (Press Enter to apply)");
-
-		// text = new Text(this, SWT.BORDER);
-		// text.setBounds(10, 40, 402, 25);
-		// text.setFocus();
-		// text.addKeyListener(new KeyListener() {
-		// @Override
-		// public void keyPressed(org.eclipse.swt.events.KeyEvent arg0) {
-		// if(arg0.keyCode == SWT.CR || arg0.keyCode == SWT.KEYPAD_CR){
-		// imagePath = text.getText();
-		// }
-		// }
-
-		// @Override
-		// public void keyReleased(org.eclipse.swt.events.KeyEvent arg0) {
-
-		// }
-		// });
 
 		combo.setText(config.getImagePath());
 		combo.setBounds(10, 38, 394, 27);
@@ -171,8 +140,15 @@ public class GUI extends Composite {
 		lblImageSize.setBounds(141, 76, 94, 19);
 		lblImageSize.setText("Image Size (%)");
 
-		Button btnNewButton = new Button(this, SWT.NONE);
-		btnNewButton.addSelectionListener(new SelectionAdapter() {
+		Button btnStartWidget = new Button(this, SWT.NONE);
+		btnStartWidget.setBounds(10, 152, 190, 111);
+		btnStartWidget.setText("Start Widget");	
+		Button btnCloseWidget = new Button(this, SWT.NONE);
+		btnCloseWidget.setText("Close Widget");
+		btnCloseWidget.setEnabled(false);
+		btnCloseWidget.setBounds(222, 152, 190, 111);
+
+		btnStartWidget.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				try {
@@ -183,24 +159,34 @@ public class GUI extends Composite {
 						Widget.dialogBox("\"" + imagePath + "\" does not exist.", "Error", 170,
 								JOptionPane.ERROR_MESSAGE);
 					} else {
-						w = new Widget(imagePath, 100, btnBorderless.getSelection(), btnAlwaysOnTop.getSelection(),
-								btnClickThrough.getSelection());
-						Widget.run(w);
-						config.setImagePath(imagePath);
-						if (combo.indexOf(combo.getText()) == -1)
-							combo.add(imagePath);
+						if (w == null) {
+							w = new Widget(imagePath, 100, btnBorderless.getSelection(), btnAlwaysOnTop.getSelection(),
+									btnClickThrough.getSelection());
+							Widget.run(w);
+							config.setImagePath(imagePath);
+							if (combo.indexOf(combo.getText()) == -1)
+								combo.add(imagePath);
+							btnStartWidget.setEnabled(false); // disable "Start Widget" button
+							btnCloseWidget.setEnabled(true); // enable "Close Widget" button
+						}
 					}
 				} catch (Exception e1) {
 					e1.printStackTrace();
 				}
 			}
 		});
-		btnNewButton.setBounds(10, 152, 190, 111);
-		btnNewButton.setText("Start Widget");
 
-		CLabel lblNewLabel = new CLabel(this, SWT.NONE);
-		lblNewLabel.setBounds(267, 7, 69, 25);
-		lblNewLabel.setText("New Label");
+		btnCloseWidget.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				if (w != null) {
+					w.stop();
+					w = null;
+					btnStartWidget.setEnabled(true); // enable "Start Widget" button
+					btnCloseWidget.setEnabled(false); // disable "Close Widget" button
+				}
+			}
+		});
 
 	}
 
@@ -239,12 +225,11 @@ public class GUI extends Composite {
 	}
 
 	public void saveConfig() {
-        fileManager.saveConfig(config);
+		fileManager.saveConfig(config);
 	}
 
 	public void saveHistory() {
 		fileManager.saveHistory(combo);
 	}
 
-	
 }
