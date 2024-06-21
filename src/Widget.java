@@ -1,9 +1,17 @@
 import java.awt.*;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseMotionListener;
+
 import javax.swing.*;
+
 import static java.awt.GraphicsDevice.WindowTranslucency.*;
 
 public class Widget extends JFrame {
     public String imagePath;
+    private int xDrag;
+    private int yDrag;
+    private int xPress;
+    private int yPress;
 
     public Widget(String imagePath, int imageSize, boolean borderless, boolean alwaysOnTop, boolean clickThrough) {
         super("Transparent GIF Widget Instance");
@@ -28,6 +36,24 @@ public class Widget extends JFrame {
         // setContentPane(panel);
         add(imageLabel, gbc);
 
+        addMouseMotionListener((MouseMotionListener) new MouseMotionListener() {
+            @Override
+            public void mouseDragged(MouseEvent e) {
+                xDrag = e.getX();
+                yDrag = e.getY();
+
+                JFrame sFrame = (JFrame) e.getSource();
+                sFrame.setLocation(sFrame.getLocation().x + xDrag - xPress,
+                        sFrame.getLocation().y + yDrag - yPress);
+            }
+
+            @Override
+            public void mouseMoved(MouseEvent e) {
+                xPress = e.getX();
+                yPress = e.getY();
+            }
+
+        });
     }
 
     public static void dialogBox(String message, String titleBar, int width, int type) {
@@ -42,8 +68,8 @@ public class Widget extends JFrame {
         GraphicsDevice gd = ge.getDefaultScreenDevice();
         final boolean isTranslucencySupported = gd.isWindowTranslucencySupported(TRANSLUCENT);
 
-        dialogBox("To move the GIF, select \"Move\" from the Alt + Space menu, then use the arrow keys and mouse.",
-                "GIF Widget 0.1", 420, JOptionPane.INFORMATION_MESSAGE);
+        // dialogBox("To move the GIF, select \"Move\" from the Alt + Space menu, then use the arrow keys and mouse.",
+        //         "GIF Widget 0.1", 420, JOptionPane.INFORMATION_MESSAGE);
 
         // If translucent windows aren't supported,
         // create an opaque window.
@@ -56,14 +82,6 @@ public class Widget extends JFrame {
         SwingUtilities.invokeLater(new Runnable() {
             @Override
             public void run() {
-                // Widget sw = new Widget(imagePath);
-
-                // Set the window to 70% translucency, if supported.
-                if (isTranslucencySupported) {
-                    // sw.setOpacity(0.7f);
-                }
-
-                // Display the window.
                 w.setVisible(true);
             }
         });

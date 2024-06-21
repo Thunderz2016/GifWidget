@@ -17,7 +17,6 @@ import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Spinner;
 import org.eclipse.swt.widgets.Combo;
-import org.eclipse.swt.custom.CLabel;
 
 public class GUI extends Composite {
 	private Widget w;
