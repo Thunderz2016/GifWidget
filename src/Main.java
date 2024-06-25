@@ -44,7 +44,7 @@ public class Main extends org.eclipse.swt.widgets.Shell  {
 			}
 		});
 
-		shell.pack();
+		shell.setSize(410, 310);
 		shell.open();
 		while (!shell.isDisposed()) {
 			if (!display.readAndDispatch()) {
