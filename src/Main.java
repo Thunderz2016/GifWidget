@@ -9,6 +9,8 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 
 public class Main extends org.eclipse.swt.widgets.Shell  {
+	public Main() {
+	}
 
 	public static void main(String[] args) {
 		Display display = new Display();
@@ -16,7 +18,9 @@ public class Main extends org.eclipse.swt.widgets.Shell  {
 		shell.setText("GIF Widget 0.1 - Control Panel");
 
 		GUI gui = new GUI(shell, SWT.NONE);
-		gui.createMenuBar(shell);
+		new MenuBar(display, shell, gui);
+
+		// gui.createMenuBar(shell);
 		gui.pack();
 
 		shell.addShellListener(new ShellAdapter() {

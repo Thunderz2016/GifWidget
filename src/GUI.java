@@ -254,11 +254,23 @@ public class GUI extends Composite {
 		helpAboutItem.setText("&About");
 	}
 
+	
+    public void loadNewConfig() {
+		combo.removeAll();
+        fileManager.loadHistory(combo);
+    }
+
 	public void saveConfig() {
 		fileManager.saveConfig(config);
 	}
 
 	public void saveHistory() {
+		fileManager.saveHistory(combo);
+	}
+
+	public void clearHistory() {
+		config.setImagePath("");
+		combo.removeAll();
 		fileManager.saveHistory(combo);
 	}
 }
