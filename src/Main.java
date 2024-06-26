@@ -1,4 +1,5 @@
 
+import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
 import org.eclipse.swt.SWT;
@@ -21,7 +22,9 @@ public class Main extends org.eclipse.swt.widgets.Shell  {
 		shell.addShellListener(new ShellAdapter() {
 			@Override
 			public void shellClosed(ShellEvent e) {
-				int quit = JOptionPane.showConfirmDialog(null,
+				JFrame jf = new JFrame();
+				jf.setAlwaysOnTop(true);
+				int quit = JOptionPane.showConfirmDialog(jf,
 						"<html><body><p style='width:150px;'>Close all widgets and quit?</p></body></html>",
 						"GIF Widget 0.1", JOptionPane.YES_NO_OPTION);
 
@@ -44,7 +47,7 @@ public class Main extends org.eclipse.swt.widgets.Shell  {
 			}
 		});
 
-		shell.setSize(410, 310);
+		shell.setSize(410, 335);
 		shell.open();
 		while (!shell.isDisposed()) {
 			if (!display.readAndDispatch()) {

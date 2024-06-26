@@ -57,7 +57,9 @@ public class Widget extends JFrame {
     }
 
     public static void dialogBox(String message, String titleBar, int width, int type) {
-        JOptionPane.showMessageDialog(null,
+        JFrame jf = new JFrame();
+        jf.setAlwaysOnTop(true);
+        JOptionPane.showMessageDialog(jf,
                 "<html><body><p style='width: " + width + "px;'>" + message + "</p></body></html>", titleBar,
                 type);
     }
