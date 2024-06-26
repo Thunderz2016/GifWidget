@@ -1,7 +1,6 @@
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Button;
 
-import java.awt.FileDialog;
 import java.awt.Frame;
 import java.io.File;
 import java.io.FilenameFilter;
@@ -20,6 +19,7 @@ import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.layout.GridData;
+import org.eclipse.swt.widgets.FileDialog;
 
 public class GUI extends Composite {
 	private Widget w;
@@ -42,127 +42,126 @@ public class GUI extends Composite {
 		imagePath = config.getImagePath();
 		setLayout(new GridLayout(2, false));
 		// setSize(410, 325);
-		
+
 		Group grpImageProperties = new Group(this, SWT.NONE);
 		GridData gd_grpImageProperties = new GridData(SWT.FILL, SWT.FILL, true, false, 2, 1);
 		gd_grpImageProperties.heightHint = 96;
 		grpImageProperties.setLayoutData(gd_grpImageProperties);
 		grpImageProperties.setText("Image Properties");
-		
-				Label lblGifFilePath = new Label(grpImageProperties, SWT.NONE);
-				lblGifFilePath.setBounds(10, 19, 222, 19);
-				lblGifFilePath.setText("GIF File Path: (Press Enter to apply)");
-				combo = new Combo(grpImageProperties, SWT.NONE);
-				combo.setBounds(10, 46, 382, 27);
-				fileManager.loadHistory(combo);
-				
-						combo.setText(config.getImagePath());
-						
-								Button btnBrowse = new Button(grpImageProperties, SWT.NONE);
-								btnBrowse.setBounds(10, 79, 85, 29);
-								btnBrowse.addSelectionListener(new SelectionAdapter() {
-									@Override
-									public void widgetSelected(SelectionEvent e) {
-										FileDialog dialog = new FileDialog(new Frame(), "Select an image...", FileDialog.LOAD);
-										dialog.setFilenameFilter(new FilenameFilter() {
-											public boolean accept(File dir, String name) {
-												return name.endsWith(".gif");
-											}
-										});
-										dialog.setVisible(true);
-										if (dialog.getDirectory() != null && dialog.getFile() != null) {
-											imagePath = dialog.getDirectory() + dialog.getFile();
-											combo.setText(imagePath);
-										}
-									}
-								});
-								btnBrowse.setText("Browse...");
-								
-										Label lblImageSize = new Label(grpImageProperties, SWT.NONE);
-										lblImageSize.setBounds(140, 82, 94, 19);
-										lblImageSize.setText("Image Size (%)");
-										
-												Spinner spinner = new Spinner(grpImageProperties, SWT.BORDER);
-												spinner.setBounds(240, 79, 50, 25);
-												spinner.setEnabled(false);
-												spinner.setSelection(100);
-												combo.addSelectionListener(new SelectionAdapter() {
-													@Override
-													public void widgetSelected(SelectionEvent e) {
-														imagePath = combo.getText();
-													}
-												});
-												combo.addKeyListener(new KeyListener() {
-													@Override
-													public void keyPressed(org.eclipse.swt.events.KeyEvent arg0) {
-														if (arg0.keyCode == SWT.CR || arg0.keyCode == SWT.KEYPAD_CR) {
-															String fieldText = combo.getText();
-															imagePath = fieldText;
-															config.setImagePath(fieldText);
-															// if(combo.indexOf(fieldText) == -1){
-															// combo.add(fieldText);
-															// }
-														}
-													}
 
-													@Override
-													public void keyReleased(org.eclipse.swt.events.KeyEvent arg0) {
+		Label lblGifFilePath = new Label(grpImageProperties, SWT.NONE);
+		lblGifFilePath.setBounds(10, 19, 222, 19);
+		lblGifFilePath.setText("GIF File Path: (Press Enter to apply)");
+		combo = new Combo(grpImageProperties, SWT.NONE);
+		combo.setBounds(10, 46, 382, 27);
+		fileManager.loadHistory(combo);
 
-													}
-												});
-		
+		combo.setText(config.getImagePath());
+
+		Button btnBrowse = new Button(grpImageProperties, SWT.NONE);
+		btnBrowse.setBounds(10, 79, 85, 29);
+		btnBrowse.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				FileDialog dialog = new FileDialog(parent.getShell());
+				dialog.setText("Select an image...");
+				dialog.setFilterExtensions(new String[] { "*.gif", "*.jpg", "*.png", "*.webp", "*.*" });
+				dialog.setFilterNames(new String[] { "Grahics Interchange Format", "JPEG Image",
+						"Portable Network Graphics", "WebP Image", "All files" });
+				String path = dialog.open();
+				if (path != null) {
+					imagePath = path;
+					combo.setText(imagePath);
+				}
+			}
+		});
+		btnBrowse.setText("Browse...");
+
+		Label lblImageSize = new Label(grpImageProperties, SWT.NONE);
+		lblImageSize.setBounds(140, 82, 94, 19);
+		lblImageSize.setText("Image Size (%)");
+
+		Spinner spinner = new Spinner(grpImageProperties, SWT.BORDER);
+		spinner.setBounds(240, 79, 50, 25);
+		spinner.setEnabled(false);
+		spinner.setSelection(100);
+		combo.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				imagePath = combo.getText();
+			}
+		});
+		combo.addKeyListener(new KeyListener() {
+			@Override
+			public void keyPressed(org.eclipse.swt.events.KeyEvent arg0) {
+				if (arg0.keyCode == SWT.CR || arg0.keyCode == SWT.KEYPAD_CR) {
+					String fieldText = combo.getText();
+					imagePath = fieldText;
+					config.setImagePath(fieldText);
+					// if(combo.indexOf(fieldText) == -1){
+					// combo.add(fieldText);
+					// }
+				}
+			}
+
+			@Override
+			public void keyReleased(org.eclipse.swt.events.KeyEvent arg0) {
+
+			}
+		});
+
 		Group grpWidgetProperties = new Group(this, SWT.SHADOW_ETCHED_IN);
 		grpWidgetProperties.setLayout(new GridLayout(3, false));
 		GridData gd_grpWidgetProperties = new GridData(SWT.FILL, SWT.FILL, true, false, 2, 1);
 		gd_grpWidgetProperties.heightHint = 33;
 		grpWidgetProperties.setLayoutData(gd_grpWidgetProperties);
 		grpWidgetProperties.setText("Widget Properties");
-		
-				Button btnBorderless = new Button(grpWidgetProperties, SWT.CHECK);
-				GridData gd_btnBorderless = new GridData(SWT.CENTER, SWT.CENTER, true, false, 1, 1);
-				gd_btnBorderless.widthHint = 100;
-				btnBorderless.setLayoutData(gd_btnBorderless);
-				btnBorderless.setSelection(config.isBorderless());
-				btnBorderless.setText("Borderless");
-				
-						Button btnAlwaysOnTop = new Button(grpWidgetProperties, SWT.CHECK);
-						GridData gd_btnAlwaysOnTop = new GridData(SWT.CENTER, SWT.CENTER, true, false, 1, 1);
-						gd_btnAlwaysOnTop.widthHint = 137;
-						btnAlwaysOnTop.setLayoutData(gd_btnAlwaysOnTop);
-						btnAlwaysOnTop.setText("Always On Top");
-						btnAlwaysOnTop.setSelection(config.isAlwaysOnTop());
-						
-								Button btnClickThrough = new Button(grpWidgetProperties, SWT.CHECK);
-								GridData gd_btnClickThrough = new GridData(SWT.CENTER, SWT.CENTER, true, false, 1, 1);
-								gd_btnClickThrough.widthHint = 130;
-								btnClickThrough.setLayoutData(gd_btnClickThrough);
-								btnClickThrough.setEnabled(false);
-								btnClickThrough.setSelection(config.isClickThrough());
-								btnClickThrough.addSelectionListener(new SelectionAdapter() {
-									@Override
-									public void widgetSelected(SelectionEvent e) {
-										config.setClickThrough(btnClickThrough.getSelection());
-									}
-								});
-								btnClickThrough.setText("Click Through");
-								btnAlwaysOnTop.addSelectionListener(new SelectionAdapter() {
-									@Override
-									public void widgetSelected(SelectionEvent e) {
-										config.setAlwaysOnTop(btnAlwaysOnTop.getSelection());
-										if (w != null)
-											w.setAlwaysOnTop(btnAlwaysOnTop.getSelection());
-									}
-								});
-								btnBorderless.addSelectionListener(new SelectionAdapter() {
-									@Override
-									public void widgetSelected(SelectionEvent e) {
-										config.setBorderless(btnBorderless.getSelection());
-										if (w != null) {
 
-										}
+		Button btnBorderless = new Button(grpWidgetProperties, SWT.CHECK);
+		GridData gd_btnBorderless = new GridData(SWT.CENTER, SWT.CENTER, true, false, 1, 1);
+		gd_btnBorderless.widthHint = 100;
+		btnBorderless.setLayoutData(gd_btnBorderless);
+		btnBorderless.setSelection(config.isBorderless());
+		btnBorderless.setText("Borderless");
 
-									}
-								});
+		Button btnAlwaysOnTop = new Button(grpWidgetProperties, SWT.CHECK);
+		GridData gd_btnAlwaysOnTop = new GridData(SWT.CENTER, SWT.CENTER, true, false, 1, 1);
+		gd_btnAlwaysOnTop.widthHint = 137;
+		btnAlwaysOnTop.setLayoutData(gd_btnAlwaysOnTop);
+		btnAlwaysOnTop.setText("Always On Top");
+		btnAlwaysOnTop.setSelection(config.isAlwaysOnTop());
+
+		Button btnClickThrough = new Button(grpWidgetProperties, SWT.CHECK);
+		GridData gd_btnClickThrough = new GridData(SWT.CENTER, SWT.CENTER, true, false, 1, 1);
+		gd_btnClickThrough.widthHint = 130;
+		btnClickThrough.setLayoutData(gd_btnClickThrough);
+		btnClickThrough.setEnabled(false);
+		btnClickThrough.setSelection(config.isClickThrough());
+		btnClickThrough.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				config.setClickThrough(btnClickThrough.getSelection());
+			}
+		});
+		btnClickThrough.setText("Click Through");
+		btnAlwaysOnTop.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				config.setAlwaysOnTop(btnAlwaysOnTop.getSelection());
+				if (w != null)
+					w.setAlwaysOnTop(btnAlwaysOnTop.getSelection());
+			}
+		});
+		btnBorderless.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				config.setBorderless(btnBorderless.getSelection());
+				if (w != null) {
+
+				}
+
+			}
+		});
 
 		Button btnStartWidget = new Button(this, SWT.NONE);
 		// gd_btnStartWidget.heightHint = 106;
@@ -254,11 +253,10 @@ public class GUI extends Composite {
 		helpAboutItem.setText("&About");
 	}
 
-	
-    public void loadNewConfig() {
+	public void loadNewConfig() {
 		combo.removeAll();
-        fileManager.loadHistory(combo);
-    }
+		fileManager.loadHistory(combo);
+	}
 
 	public void saveConfig() {
 		fileManager.saveConfig(config);
