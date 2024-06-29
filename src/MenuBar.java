@@ -9,11 +9,13 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swt.widgets.Shell;
 
 public class MenuBar extends Shell {
+	private FileManager fileManager;
 
 	/**
 	 * Launch the application.
@@ -43,6 +45,7 @@ public class MenuBar extends Shell {
 	 */
 	public MenuBar(Display display, Shell shell, GUI gui) {
 		super(display, SWT.NONE);
+		fileManager = new FileManager();
 
 		Menu menu = new Menu(shell, SWT.BAR);
 		shell.setMenuBar(menu);
@@ -55,9 +58,41 @@ public class MenuBar extends Shell {
 
 		MenuItem mntmImportConfig = new MenuItem(menu_1, SWT.NONE);
 		mntmImportConfig.setText("Import Config...");
+		mntmImportConfig.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				FileDialog dialog = new FileDialog(shell);
+				dialog.setText("Select a backup config.dat file...");
+				dialog.setFilterExtensions(new String[] { "*.dat", "*.*" });
+				dialog.setFilterNames(new String[] { "DAT file", "All files" });
+				String path = dialog.open();
+				Config importedConfig;
+				if (path != null) {
+					importedConfig = fileManager.loadConfig(path);
+					if (importedConfig != null) {
+						gui.setConfig(importedConfig);
+					}
+					Widget.dialogBox("Import complete. Please restart GIF Widget to apply new config.", "Import Config",
+							300, JOptionPane.INFORMATION_MESSAGE);
+				}
+			}
+		});
 
 		MenuItem mntmExportConfig = new MenuItem(menu_1, SWT.NONE);
 		mntmExportConfig.setText("Export Config...");
+		mntmExportConfig.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				FileDialog dialog = new FileDialog(shell, SWT.SAVE);
+				dialog.setText("Select a location to save config file...");
+				dialog.setFilterExtensions(new String[] { "*.dat", "*.*" });
+				dialog.setFilterNames(new String[] { "DAT files", "All files" });
+				String path = dialog.open();
+				if (path != null) {
+					fileManager.saveConfig(gui.getConfig(), path);
+				}
+			}
+		});
 
 		new MenuItem(menu_1, SWT.SEPARATOR);
 
@@ -86,7 +121,7 @@ public class MenuBar extends Shell {
 		mntmReloadFilePath.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				gui.loadNewConfig();
+				gui.loadHistory();
 			}
 		});
 

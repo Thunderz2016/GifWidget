@@ -1,9 +1,7 @@
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Button;
 
-import java.awt.Frame;
 import java.io.File;
-import java.io.FilenameFilter;
 import javax.swing.JOptionPane;
 
 import org.eclipse.swt.SWT;
@@ -122,6 +120,7 @@ public class GUI extends Composite {
 		gd_btnBorderless.widthHint = 100;
 		btnBorderless.setLayoutData(gd_btnBorderless);
 		btnBorderless.setSelection(config.isBorderless());
+		btnBorderless.setEnabled(false);
 		btnBorderless.setText("Borderless");
 
 		Button btnAlwaysOnTop = new Button(grpWidgetProperties, SWT.CHECK);
@@ -253,7 +252,15 @@ public class GUI extends Composite {
 		helpAboutItem.setText("&About");
 	}
 
-	public void loadNewConfig() {
+	public void setConfig(Config config) {
+		this.config = config;
+	}
+
+	public Config getConfig() {
+		return config;
+	}
+
+	public void loadHistory() {
 		combo.removeAll();
 		fileManager.loadHistory(combo);
 	}

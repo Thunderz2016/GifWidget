@@ -11,7 +11,7 @@ import org.eclipse.swt.widgets.Combo;
 
 public class FileManager {
 
-    public void loadHistory(Combo combo) {
+	public void loadHistory(Combo combo) {
 		try {
 			Scanner readHistory = new Scanner(new File("history.dat"));
 			while (readHistory.hasNextLine()) {
@@ -58,6 +58,29 @@ public class FileManager {
 		}
 	}
 
+	public Config loadConfig(String filePath) {
+		try {
+			Scanner readConfig = new Scanner(new File(filePath));
+			String[] tokens = readConfig.nextLine().split("\\|");
+
+			String imagePath = tokens[0];
+			int imageSize = Integer.parseInt(tokens[1]);
+			boolean borderless = Boolean.parseBoolean(tokens[2]);
+			boolean alwaysOnTop = Boolean.parseBoolean(tokens[3]);
+			boolean clickThrough = Boolean.parseBoolean(tokens[4]);
+
+			readConfig.close();
+
+			return new Config(imagePath, imageSize, borderless, alwaysOnTop, clickThrough);
+
+		} catch (FileNotFoundException | NoSuchElementException e) {
+			Widget.dialogBox(
+					"An error occurred while importing config file. The file might not be accessible or the file content is invalid.",
+					"Error", 400, JOptionPane.ERROR_MESSAGE);
+			return null;
+		}
+	}
+
 	public void saveConfig(Config config) {
 		try {
 			FileWriter writeConfig = new FileWriter(new File("config.dat"), false);
@@ -69,6 +92,19 @@ public class FileManager {
 					"Error", 200, JOptionPane.ERROR_MESSAGE);
 			e.printStackTrace();
 		}
+	}
+
+	public void saveConfig(Config config, String path) {
+		try {
+            FileWriter writeConfig = new FileWriter(new File(path), false);
+            writeConfig.write(config.toString());
+            writeConfig.close();
+        } catch (IOException e) {
+            Widget.dialogBox(
+                    "An IOException has occurred while exporting config file to \"" + path + "\", please check file permissions.",
+                    "Error", 200, JOptionPane.ERROR_MESSAGE);
+            e.printStackTrace();
+        }
 	}
 
 }
