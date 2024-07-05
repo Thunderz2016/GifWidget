@@ -37,6 +37,7 @@ public class GUI extends Composite {
 		fileManager = new FileManager();
 
 		config = fileManager.loadConfig();
+		System.out.println(config);
 		imagePath = config.getImagePath();
 		setLayout(new GridLayout(2, false));
 		// setSize(410, 325);
@@ -80,9 +81,16 @@ public class GUI extends Composite {
 		lblImageSize.setText("Image Size (%)");
 
 		Spinner spinner = new Spinner(grpImageProperties, SWT.BORDER);
+		spinner.setMaximum(100);
+		spinner.setMinimum(1);
+		spinner.setIncrement(10);
 		spinner.setBounds(240, 79, 50, 25);
-		spinner.setEnabled(false);
-		spinner.setSelection(100);
+		spinner.setEnabled(true);
+		spinner.setSelection(config.getImageSize());
+		spinner.addListener(SWT.Modify, event -> {
+			config.setImageSize(spinner.getSelection());
+		});
+
 		combo.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
@@ -188,7 +196,7 @@ public class GUI extends Composite {
 								JOptionPane.ERROR_MESSAGE);
 					} else {
 						if (w == null) {
-							w = new Widget(imagePath, 100, btnBorderless.getSelection(), btnAlwaysOnTop.getSelection(),
+							w = new Widget(imagePath, config.getImageSize(), btnBorderless.getSelection(), btnAlwaysOnTop.getSelection(),
 									btnClickThrough.getSelection());
 							Widget.run(w);
 							config.setImagePath(imagePath);

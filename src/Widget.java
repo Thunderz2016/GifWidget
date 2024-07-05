@@ -18,6 +18,11 @@ public class Widget extends JFrame {
 
         ImageIcon gif = new ImageIcon(imagePath);
         JLabel imageLabel = new JLabel();
+        Image image = gif.getImage();
+        Image resizedImage = image.getScaledInstance((int) (gif.getIconWidth() * (imageSize / 100.0)),
+                (int) (gif.getIconHeight() * (imageSize / 100.0)), java.awt.Image.SCALE_DEFAULT);
+        gif = new ImageIcon(resizedImage);
+
         imageLabel.setIcon(gif);
         imageLabel.setBounds(0, 0, gif.getIconHeight(), gif.getIconWidth());
 
@@ -27,7 +32,7 @@ public class Widget extends JFrame {
         setSize(new Dimension(gif.getIconWidth(), gif.getIconHeight()));
         setLayout(new GridBagLayout());
         setUndecorated(true);
-        setSize(gif.getIconWidth(), gif.getIconHeight());
+        // setSize(gif.getIconWidth(), gif.getIconHeight());
         setLocationRelativeTo(null);
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         setBackground(new Color(0, 0, 0, 0));
