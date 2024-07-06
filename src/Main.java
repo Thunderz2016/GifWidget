@@ -14,7 +14,7 @@ public class Main extends org.eclipse.swt.widgets.Shell  {
 
 	public static void main(String[] args) {
 		Display display = new Display();
-		Shell shell = new Shell(display);
+		Shell shell = new Shell(SWT.CLOSE | SWT.TITLE | SWT.MIN);
 		shell.setText(String.format("GIF Widget %s", Widget.VERSION));
 
 		GUI gui = new GUI(shell, SWT.NONE);
@@ -51,7 +51,7 @@ public class Main extends org.eclipse.swt.widgets.Shell  {
 			}
 		});
 
-		shell.setSize(420, 340);
+		shell.setSize(420, 335);
 		shell.open();
 		while (!shell.isDisposed()) {
 			if (!display.readAndDispatch()) {
