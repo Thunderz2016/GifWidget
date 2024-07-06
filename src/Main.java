@@ -15,7 +15,7 @@ public class Main extends org.eclipse.swt.widgets.Shell  {
 	public static void main(String[] args) {
 		Display display = new Display();
 		Shell shell = new Shell(display);
-		shell.setText("GIF Widget 0.1 - Control Panel");
+		shell.setText(String.format("GIF Widget %s", Widget.VERSION));
 
 		GUI gui = new GUI(shell, SWT.NONE);
 		new MenuBar(display, shell, gui);
@@ -30,7 +30,7 @@ public class Main extends org.eclipse.swt.widgets.Shell  {
 				jf.setAlwaysOnTop(true);
 				int quit = JOptionPane.showConfirmDialog(jf,
 						"<html><body><p style='width:150px;'>Close all widgets and quit?</p></body></html>",
-						"GIF Widget 0.1", JOptionPane.YES_NO_OPTION);
+						String.format("GIF Widget %s", Widget.VERSION), JOptionPane.YES_NO_OPTION);
 
 				switch (quit) {
 					case JOptionPane.YES_OPTION:
@@ -51,7 +51,7 @@ public class Main extends org.eclipse.swt.widgets.Shell  {
 			}
 		});
 
-		shell.setSize(410, 335);
+		shell.setSize(420, 340);
 		shell.open();
 		while (!shell.isDisposed()) {
 			if (!display.readAndDispatch()) {

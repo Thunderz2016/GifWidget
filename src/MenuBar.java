@@ -1,6 +1,8 @@
 import java.awt.Desktop;
 import java.io.File;
 import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
 
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
@@ -171,9 +173,38 @@ public class MenuBar extends Shell {
 
 		MenuItem mntmGithub = new MenuItem(menu_2, SWT.NONE);
 		mntmGithub.setText("GitHub Repository");
+		mntmGithub.addSelectionListener(new SelectionAdapter() {
+			@Override
+            public void widgetSelected(SelectionEvent e) {
+                try {
+					Desktop.getDesktop().browse(new URI("https://github.com/Thunderz2016/GifWidget"));
+				} catch (IOException e1) {
+					Widget.dialogBox(
+							"Unable to invoke default browser. Please visit the repo manually: https://github.com/Thunderz2016/GifWidget.",
+							"Error", 300, JOptionPane.ERROR_MESSAGE);
+					e1.printStackTrace();
+				} catch (URISyntaxException e1) {
+					Widget.dialogBox(
+							"A URI syntax exception occurred because the author is so stupid he typed the link wrong (LMAO).",
+							"Error", 250, JOptionPane.ERROR_MESSAGE);
+					e1.printStackTrace();
+				}
+            }
+		});
 
 		MenuItem mntmAbout = new MenuItem(menu_2, SWT.NONE);
 		mntmAbout.setText("About");
+		mntmAbout.addSelectionListener(new SelectionAdapter() {
+			@Override
+            public void widgetSelected(SelectionEvent e) {
+                Widget.dialogBox(
+                        String.format("GIF Widget %s (%s)", Widget.VERSION, Widget.BUILD_DATE) + "<br>" +
+                        "Author: Thunderz2016<br><br>" +
+						"Java Version: " + System.getProperty("java.version") + "<br>" + 
+						String.format("Host OS: %s (%s)", System.getProperty("os.name"), System.getProperty("os.version")),
+                        "About", 200, JOptionPane.INFORMATION_MESSAGE);
+            }
+		});
 
 		// createContents();
 

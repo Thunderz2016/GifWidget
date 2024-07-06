@@ -7,6 +7,9 @@ import javax.swing.*;
 import static java.awt.GraphicsDevice.WindowTranslucency.*;
 
 public class Widget extends JFrame {
+    public static final String VERSION = "1.0 Beta";
+	public static final String BUILD_DATE = "20240706";
+
     public String imagePath;
     private int xDrag;
     private int yDrag;
@@ -81,7 +84,7 @@ public class Widget extends JFrame {
         // If translucent windows aren't supported,
         // create an opaque window.
         if (!isTranslucencySupported) {
-            dialogBox("Translucency is not supported, creating an opaque window", "GIF Widget 0.1", 300,
+            dialogBox("Translucency is not supported, creating an opaque window", String.format("GIF Widget %s", Widget.VERSION), 300,
                     JOptionPane.INFORMATION_MESSAGE);
         }
 
